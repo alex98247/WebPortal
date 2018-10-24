@@ -30,6 +30,7 @@ configurations {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.apache.tiles', name: 'tiles-jsp', version: '3.0.7'
     providedRuntime('org.apache.tomcat.embed:tomcat-embed-jasper')
     runtimeOnly('org.postgresql:postgresql')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')

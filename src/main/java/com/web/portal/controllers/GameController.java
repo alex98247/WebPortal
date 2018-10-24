@@ -23,7 +23,7 @@ public class GameController {
     public String index(Model model) {
         Iterable<Game> games = gameRepository.findAll();
         model.addAttribute("games", games);
-        return "index";
+        return "homePage";
     }
 
     @RequestMapping("/company")
