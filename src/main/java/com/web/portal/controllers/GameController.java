@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.stream.StreamSupport;
-
 @Controller
 public class GameController {
 
@@ -19,7 +17,7 @@ public class GameController {
     private GameRepository gameRepository;
 
     @Autowired
-    private CompanyRepository companyRepositorypository;
+    private CompanyRepository companyRepository;
 
     @RequestMapping(value = {"/", "/index"})
     public String index(Model model) {
@@ -30,8 +28,7 @@ public class GameController {
 
     @RequestMapping("/company")
     public String company(@RequestParam("companyId") int id, Model model) {
-        Iterable<Company> games = companyRepositorypository.findAll();
-        Company company = StreamSupport.stream(games.spliterator(), false).filter(x -> x.getId() == id).findFirst().get();
+        Company company = companyRepository.findFirstById(id);
         model.addAttribute("company", company);
         return "company";
     }

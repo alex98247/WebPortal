@@ -1,7 +1,6 @@
 package com.web.portal.models;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "producer_company")
@@ -15,8 +14,6 @@ public class Company {
     private String name;
     @Column
     private String country;
-    @OneToMany(mappedBy = "company")
-    private Set<Game> games;
 
     public void setName(String name) {
         this.name = name;
