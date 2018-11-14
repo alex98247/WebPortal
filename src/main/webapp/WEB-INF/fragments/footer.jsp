@@ -18,6 +18,5 @@
                 </ul>
             </div>
         </div>
-        <!--/row-->
     </div>
 </footer>

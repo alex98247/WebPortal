@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Year</th>
         <th>Company</th>
-        <th>Description</th>
+        <th></th>
     </tr>
     </thead>
 
@@ -16,8 +16,8 @@
             <td>${game.getId()}</td>
             <td>${game.getName()}</td>
             <td>${game.getYear()}</td>
-            <td><a href="company?companyId=${game.getCompany().getId()}"> ${game.getCompany().getName()}</a></td>
-            <td>${game.getDescription()}</td>
+            <td><a href="company/get/${game.getCompany().getId()}"> ${game.getCompany().getName()}</a></td>
+            <td><a href="/company/get/${game.getCompany().getId()}" class="btn btn-danger">Delete Company</a></td>
         </tr>
     </c:forEach>
     </tbody>
