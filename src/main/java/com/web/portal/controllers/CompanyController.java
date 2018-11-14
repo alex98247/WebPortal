@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CompanyController {
@@ -16,17 +17,30 @@ public class CompanyController {
     private CompanyRepository companyRepository;
 
 
-    @GetMapping("/company")
-    public String getCompany(@RequestParam("companyId") int id, Model model) {
+    @GetMapping("/company/get/{companyId}")
+    public String getCompany(Model model, @PathVariable("companyId") String companyId) {
+        long id = Long.parseLong(companyId);
         Company company = companyRepository.findFirstById(id);
         model.addAttribute("company", company);
         return "company";
     }
 
-    @PostMapping("/company")
-    public String postCompany(@RequestParam("companyId") int id, Model model) {
-        Company company = companyRepository.findFirstById(id);
-        model.addAttribute("company", company);
+    @PostMapping("/company/create")
+    public String createCompany(@ModelAttribute Company company) {
+        companyRepository.save(company);
+        return "company";
+    }
+
+    @PostMapping("/company/update")
+    public String updateCompany(@ModelAttribute Company company) {
+        companyRepository.save(company);
+        return "company";
+    }
+
+    @GetMapping("/company/delete/{companyId}")
+    public String deleteCompany(@PathVariable("companyId") String companyId) {
+        long id = Long.parseLong(companyId);
+        companyRepository.deleteById(id);
         return "company";
     }
 }
