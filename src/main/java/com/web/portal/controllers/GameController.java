@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class GameController {
@@ -26,16 +28,34 @@ public class GameController {
         return "homePage";
     }
 
+    @GetMapping("/game/create")
+    public String createGameGet(Model model) {
+        List<Game> games = gameRepository.findAll(PageRequest.of(0, 3)).getContent();
+        model.addAttribute("games", games);
+        return "homePage";
+    }
+
     @PostMapping("/game/create")
-    public String createGame(@ModelAttribute Model model) {
+    public String createGamePost(@ModelAttribute Model model) {
 
         return "homePage";
     }
 
-    @PostMapping("/game/update")
-    public String updateGame(@ModelAttribute Model model) {
+    @GetMapping("/game/update/{gameId}")
+    public String updateGameGet(Model model, @PathVariable("gameId") String gameId) {
+        long id = Long.parseLong(gameId);
+        Optional<Game> game = gameRepository.findById(id);
+        if(game.isPresent()) {
+            model.addAttribute("game", game.get());
+            return "addGame";
+        }
+        return "error";
+    }
 
-        return "homePage";
+    @PostMapping("/game/update")
+    public RedirectView updateGame(@ModelAttribute Game game) {
+        gameRepository.save(game);
+        return new RedirectView("/");
     }
 
     @PostMapping("/game/delete/{gameId}")

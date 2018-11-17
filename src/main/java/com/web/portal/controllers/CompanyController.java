@@ -1,6 +1,7 @@
 package com.web.portal.controllers;
 
 import com.web.portal.models.Company;
+import com.web.portal.models.Game;
 import com.web.portal.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Optional;
 
 @Controller
 public class CompanyController {
@@ -31,10 +34,21 @@ public class CompanyController {
         return "company";
     }
 
+    @GetMapping("/company/update/{companyId}")
+    public String updateCompanyGet(Model model, @PathVariable("companyId") String companyId) {
+        long id = Long.parseLong(companyId);
+        Optional<Company> company = companyRepository.findById(id);
+        if(company.isPresent()) {
+            model.addAttribute("company", company.get());
+            return "addCompany";
+        }
+        return "error";
+    }
+
     @PostMapping("/company/update")
     public String updateCompany(@ModelAttribute Company company) {
         companyRepository.save(company);
-        return "company";
+        return "homePage";
     }
 
     @GetMapping("/company/delete/{companyId}")

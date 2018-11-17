@@ -27,4 +27,22 @@
         <put-attribute name="body" value="/WEB-INF/jsp/company.jsp" />
     </definition>
 
+    <!-- AddGame  -->
+    <definition name="addGame" extends="base.definition">
+        <put-attribute name="title" value="AddGame" />
+        <put-attribute name="body" value="/WEB-INF/jsp/addGame.jsp" />
+    </definition>
+
+    <!-- AddCompany  -->
+    <definition name="addCompany" extends="base.definition">
+        <put-attribute name="title" value="AddCompany" />
+        <put-attribute name="body" value="/WEB-INF/jsp/addCompany.jsp" />
+    </definition>
+
+    <!-- Error  -->
+    <definition name="error" extends="base.definition">
+        <put-attribute name="title" value="Error" />
+        <put-attribute name="body" value="/WEB-INF/jsp/error.jsp" />
+    </definition>
+
 </tiles-definitions>
