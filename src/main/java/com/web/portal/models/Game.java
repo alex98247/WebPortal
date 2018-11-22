@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -17,9 +17,24 @@ public class Game {
     @Column
     private int year;
 
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    private Genre genre;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public Game(){}
+
+    public Game(String name, String description, int year, Genre genre, Company company) {
+        this.name = name;
+        this.description = description;
+        this.year = year;
+        this.genre = genre;
+        this.company = company;
+
+    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -59,5 +74,13 @@ public class Game {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 }

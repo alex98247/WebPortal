@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Company</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<header th:insert="~{fragments/header :: copy}"></header>
+<nav th:insert="~{fragments/menu :: copy}"></nav>
+
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td th:text="${company.getId()}"></td>
+        <td th:text="${company.getName()}"></td>
+        <td th:text="${company.getCountry()}"></td>
+        <td><a th:href="'/company/delete/'+ ${company.getId()}" class="btn btn-danger">Delete Company</a></td>
+        <td><a th:href="'/company/update/'+ ${company.getId()}" class="btn btn-light">Update Company</a></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<footer th:insert="~{fragments/footer :: copy}"></footer>
+
+</body>
+</html>
