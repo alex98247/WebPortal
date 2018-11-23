@@ -2,7 +2,6 @@ package com.web.portal.controllers;
 
 import com.web.portal.models.Company;
 import com.web.portal.repository.CompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,12 @@ import java.util.Optional;
 @Controller
 public class CompanyController {
 
-    @Autowired
+    //@Autowired dont use
     private CompanyRepository companyRepository;
+
+    public CompanyController(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
 
     @GetMapping("/company/get/{companyId}")

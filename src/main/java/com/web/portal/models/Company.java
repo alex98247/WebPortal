@@ -6,9 +6,9 @@ import javax.persistence.*;
 @Table(name = "producer_company")
 public class Company {
 
-    @Id
+    @Id // включает column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
+    @Column(name = "id")
     private Long id;
     @Column
     private String name;

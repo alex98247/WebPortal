@@ -40,5 +40,5 @@ dependencies {
     compile group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.1.0.RELEASE'
 
-
+    compile group: 'hikari-cp', name: 'hikari-cp', version: '2.6.0'
 }
