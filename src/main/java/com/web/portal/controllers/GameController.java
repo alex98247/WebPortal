@@ -4,7 +4,6 @@ import com.web.portal.models.Company;
 import com.web.portal.models.Game;
 import com.web.portal.repository.CompanyRepository;
 import com.web.portal.repository.GameRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +16,14 @@ import java.util.Optional;
 @Controller
 public class GameController {
 
-    @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
     private CompanyRepository companyRepository;
+
+    public GameController(GameRepository gameRepository, CompanyRepository companyRepository) {
+        this.gameRepository = gameRepository;
+        this.companyRepository = companyRepository;
+    }
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {

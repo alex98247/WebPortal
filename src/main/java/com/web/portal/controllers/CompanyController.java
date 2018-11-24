@@ -14,7 +14,6 @@ import java.util.Optional;
 @Controller
 public class CompanyController {
 
-    //@Autowired dont use
     private CompanyRepository companyRepository;
 
     public CompanyController(CompanyRepository companyRepository) {
