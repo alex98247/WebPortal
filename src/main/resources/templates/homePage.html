@@ -23,12 +23,12 @@
     </thead>
 
     <tbody>
-    <th:forEach th:each="game : ${games}">
+    <th:forEach th:each="game : ${gameList}">
         <tr>
             <td th:text="${game.getId()}"></td>
             <td th:text="${game.getName()}"></td>
-            <td th:text="${game.getName()}"></td>
-            <td th:text="${game.getName()}"></td>
+            <td th:text="${game.getYear()}"></td>
+            <td th:text="${game.getGenre()}"></td>
             <td><a th:href="'company/get/'+ ${game.getCompany().getId()}" th:text="${game.getCompany().getName()}"></a>
             </td>
             <td><a th:href="'/game/delete/'+ ${game.getId()}" class="btn btn-danger">Delete Game</a></td>
@@ -37,6 +37,45 @@
     </th:forEach>
     </tbody>
 </table>
+<div class="row">
+    <div class="form-group col-md-1">
+        <select class="form-control pagination" id="pageSizeSelect">
+            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+                    th:value="${pageSize}"
+                    th:selected="${pageSize} == ${selectedPageSize}"></option>
+        </select>
+    </div>
+    <div th:if="${gameList.totalPages != 1}"
+         class="form-group col-md-11 pagination-centered">
+        <ul class="pagination">
+            <li th:class="${gameList.number == 0} ? disabled"><a
+                    class="pageLink"
+                    th:href="@{/(pageSize=${selectedPageSize}, page=1)}">«</a>
+            </li>
+            <li th:class="${gameList.number == 0} ? disabled"><a
+                    class="pageLink"
+                    th:href="@{/(pageSize=${selectedPageSize}, page=${gameList.number})}">←</a>
+            </li>
+            <li
+                    th:class="${gameList.number == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                <a class="pageLink"
+                   th:href="@{/(pageSize=${selectedPageSize}, page=${page})}"
+                   th:text="${page}"></a>
+            </li>
+            <li
+                    th:class="${gameList.number + 1 == gameList.totalPages} ? disabled">
+                <a class="pageLink"
+                   th:href="@{/(pageSize=${selectedPageSize}, page=${gameList.number + 2})}">→</a>
+            </li>
+            <li
+                    th:class="${gameList.number + 1 == gameList.totalPages} ? disabled">
+                <a class="pageLink"
+                   th:href="@{/(pageSize=${selectedPageSize}, page=${gameList.totalPages})}">»</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <footer th:insert="~{fragments/footer :: copy}"></footer>
 </body>
 </html>
