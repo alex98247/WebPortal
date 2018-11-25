@@ -3,6 +3,21 @@
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+
+    <style>
+        .pagination-centered {
+            text-align: center;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .pointer-disabled {
+            pointer-events: none;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -77,5 +92,20 @@
     </div>
 </div>
 <footer th:insert="~{fragments/footer :: copy}"></footer>
+
+// ------ Вообще хз для чего следующий скрипт
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        changePageAndSize();
+    });
+    function changePageAndSize() {
+        $('#pageSizeSelect').change(function(evt) {
+            window.location.replace("/?pageSize=" + this.value + "&page=1");
+        });
+    }
+    /*]]>*/
+</script>
+//----------------------------
 </body>
 </html>

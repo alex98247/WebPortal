@@ -2,7 +2,7 @@ package com.web.portal.models;
 
 public class Pager {
 
-    private int buttonsToShow = 5;
+    private int buttonsToShow = 3;
 
     private int startPage;
 
