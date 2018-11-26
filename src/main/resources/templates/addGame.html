@@ -32,15 +32,10 @@
             <td>Genre :</td>
             <td><select name="genre" class="form-control">
 
-                <option>SHOOTER</option>
-
-                <option>FIGHTING</option>
-
-                <option>STEALTH</option>
-
-                <option>SURVIVAL</option>
-
-                <option>ADVENTURE</option>
+                <option th:each="genre : ${T(com.web.portal.models.Genre).values()}"
+                        th:value="${genre}"
+                        th:text="${genre}">
+                </option>
 
             </select></td>
         </tr>
