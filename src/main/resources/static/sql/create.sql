@@ -1,7 +1,7 @@
 -- Create Companies Table --
 CREATE TABLE producer_company
 (
-    company_id serial NOT NULL PRIMARY KEY,
+    id serial NOT NULL PRIMARY KEY,
     name varchar(25),
     country varchar(20)
 )
