@@ -41,4 +41,5 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.1.0.RELEASE'
 
     compile group: 'hikari-cp', name: 'hikari-cp', version: '2.6.0'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
 }

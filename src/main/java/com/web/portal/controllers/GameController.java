@@ -1,21 +1,21 @@
 package com.web.portal.controllers;
 
-import com.web.portal.models.Company;
 import com.web.portal.models.Game;
 import com.web.portal.models.Pager;
-import com.web.portal.repository.CompanyRepository;
 import com.web.portal.repository.GameRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/api/game")
 public class GameController {
 
     private static final int BUTTONS_TO_SHOW = 3;
@@ -25,11 +25,9 @@ public class GameController {
 
     private GameRepository gameRepository;
 
-    private CompanyRepository companyRepository;
 
-    public GameController(GameRepository gameRepository, CompanyRepository companyRepository) {
+    public GameController(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.companyRepository = companyRepository;
     }
 
     @GetMapping(value = {"/", "/index"})
@@ -54,42 +52,28 @@ public class GameController {
         return "homePage";
     }
 
-    @GetMapping("/game/create")
-    public String createGame(Model model) {
-        Iterable<Company> companies = companyRepository.findAll();
-        model.addAttribute("companies", companies);
-        return "addGame";
+    @GetMapping
+    public Collection<Game> getGames() {
+        return gameRepository.findAll();
     }
 
-    @PostMapping("/game/create")
-    public String createGame(@ModelAttribute Game game, @RequestParam String comp) {
-        Company company = companyRepository.findFirstById(Long.parseLong(comp));
-        game.setCompany(company);
+    @PostMapping
+    public ResponseEntity<Game> createGame(@RequestBody Game game) throws URISyntaxException {
         gameRepository.save(game);
-        return "redirect:/";
+        return ResponseEntity.created(new URI("/api/game/" + game.getId()))
+                .body(game);
     }
 
-    @GetMapping("/game/update/{gameId}")
-    public String updateGame(Model model, @PathVariable("gameId") String gameId) {
-        long id = Long.parseLong(gameId);
-        Optional<Game> game = gameRepository.findById(id);
-        if (game.isPresent()) {
-            model.addAttribute("game", game.get());
-            return "editGame";
-        }
-        return "error";
-    }
-
-    @PostMapping("/game/update")
-    public RedirectView updateGame(@ModelAttribute Game game) {
+    @PutMapping
+    public ResponseEntity<Game> updateGame(@RequestBody Game game) {
         gameRepository.save(game);
-        return new RedirectView("/");
+        return ResponseEntity.ok().body(game);
     }
 
-    @GetMapping("/game/delete/{gameId}")
-    public String updateGame(@PathVariable("gameId") String gameId) {
+    @DeleteMapping("/{gameId}")
+    public ResponseEntity<Game> deleteGame(@PathVariable("gameId") String gameId) {
         long id = Long.parseLong(gameId);
         gameRepository.deleteById(id);
-        return "redirect:/";
+        return ResponseEntity.ok().build();
     }
 }

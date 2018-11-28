@@ -1,7 +1,10 @@
 package com.web.portal.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "producer_company")
 public class Company {
