@@ -3,6 +3,13 @@
     <title>Company</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <script>
+        function confirmDelete(this_id) {
+            if(confirm("Do you want to delete?")) {
+                window.location = '/company/delete/' + this_id;
+            }
+        };
+    </script>
 </head>
 <body>
 
@@ -25,7 +32,7 @@
         <td th:text="${company.getId()}"></td>
         <td th:text="${company.getName()}"></td>
         <td th:text="${company.getCountry()}"></td>
-        <td><a th:href="'/company/delete/'+ ${company.getId()}" class="btn btn-danger">Delete Company</a></td>
+        <td><button onClick="confirmDelete(this.id)" th:id="${company.getId()}" class="btn btn-danger">Delete Company</button></td>
         <td><a th:href="'/company/update/'+ ${company.getId()}" class="btn btn-light">Update Company</a></td>
     </tr>
 

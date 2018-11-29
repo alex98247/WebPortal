@@ -2,6 +2,7 @@
 <head>
     <title>Home</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<<<<<<< HEAD
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 
 
@@ -18,11 +19,21 @@
         }
     </style>
 
+=======
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+    <script>
+        function confirmDelete(this_id) {
+            if(confirm("Do you want to delete?")) {
+                window.location = '/game/delete/' + this_id;
+            }
+        };
+    </script>
+>>>>>>> 8603c973f4cdaa042937ad5ebdaaf899f4d353f6
 </head>
 <body>
 
-<header th:insert="~{fragments/header :: copy}"></header>
-<nav th:insert="~{fragments/menu :: copy}"></nav>
+<div th:insert="~{fragments/header :: copy}"></div>
+<div th:insert="~{fragments/menu :: copy}"></div>
 
 <table class="table table-dark">
     <thead>
@@ -44,9 +55,8 @@
             <td th:text="${game.getName()}"></td>
             <td th:text="${game.getYear()}"></td>
             <td th:text="${game.getGenre()}"></td>
-            <td><a th:href="'company/get/'+ ${game.getCompany().getId()}" th:text="${game.getCompany().getName()}"></a>
-            </td>
-            <td><a th:href="'/game/delete/'+ ${game.getId()}" class="btn btn-danger">Delete Game</a></td>
+            <td><a th:href="'company/get/'+ ${game.getCompany().getId()}" th:text="${game.getCompany().getName()}"></a></td>
+            <td><button onClick="confirmDelete(this.id)" th:id="${game.getCompany().getId()}" class="btn btn-danger">Delete Game</button></td>
             <td><a th:href="'/game/update/'+ ${game.getId()}" class="btn btn-light">Update Game</a></td>
         </tr>
     </th:forEach>
@@ -91,6 +101,7 @@
         </ul>
     </div>
 </div>
+<<<<<<< HEAD
 <footer th:insert="~{fragments/footer :: copy}"></footer>
 
 // ------ Вообще хз для чего следующий скрипт
@@ -107,5 +118,8 @@
     /*]]>*/
 </script>
 //----------------------------
+=======
+<div th:insert="~{fragments/footer :: copy}"></div>
+>>>>>>> 8603c973f4cdaa042937ad5ebdaaf899f4d353f6
 </body>
 </html>

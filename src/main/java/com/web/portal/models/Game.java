@@ -10,11 +10,8 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String name;
-    @Column
     private String description;
-    @Column
     private int year;
 
     @Enumerated

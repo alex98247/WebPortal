@@ -6,13 +6,10 @@ import javax.persistence.*;
 @Table(name = "producer_company")
 public class Company {
 
-    @Id // включает column
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
     private Long id;
-    @Column
     private String name;
-    @Column
     private String country;
 
     public void setName(String name) {

@@ -32,7 +32,7 @@ public class CompanyController {
     @PostMapping("/company/create")
     public String createCompany(@ModelAttribute Company company) {
         companyRepository.save(company);
-        return "company";
+        return "redirect:/company/get/" + company.getId();
     }
 
     @GetMapping("/company/create")
@@ -54,7 +54,7 @@ public class CompanyController {
     @PostMapping("/company/update")
     public String updateCompany(@ModelAttribute Company company) {
         companyRepository.save(company);
-        return "homePage";
+        return "redirect:/";
     }
 
 
@@ -62,6 +62,6 @@ public class CompanyController {
     public String deleteCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
         companyRepository.deleteById(id);
-        return "company";
+        return "redirect:/";
     }
 }

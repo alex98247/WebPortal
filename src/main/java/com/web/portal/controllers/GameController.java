@@ -66,7 +66,7 @@ public class GameController {
         Company company = companyRepository.findFirstById(Long.parseLong(comp));
         game.setCompany(company);
         gameRepository.save(game);
-        return "homePage";
+        return "redirect:/";
     }
 
     @GetMapping("/game/update/{gameId}")
@@ -90,6 +90,6 @@ public class GameController {
     public String updateGame(@PathVariable("gameId") String gameId) {
         long id = Long.parseLong(gameId);
         gameRepository.deleteById(id);
-        return "homePage";
+        return "redirect:/";
     }
 }
