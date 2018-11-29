@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from 'reactstrap';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import Menu from './Menu';
 
 class GameList extends Component {
 
@@ -36,7 +37,10 @@ class GameList extends Component {
                 <td>{game.name}</td>
                 <td>{game.year}</td>
                 <td>{game.genre}</td>
-                <td>{game.company.name}</td>
+                <td><Link to={{
+                    pathname: "/companies/" + game.company.id,
+                    state: {company: game.company}
+                }}>{game.company.name}</Link></td>
                 <td><Button color="primary" tag={Link} to={{
                     pathname: "/games/" + game.id,
                     state: {game: game}
@@ -46,24 +50,26 @@ class GameList extends Component {
         );
 
         return (
+            <div>
+                <Menu/>
+                <table className="table table-dark">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Year</th>
+                        <th>Genre</th>
+                        <th>Company</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
 
-            <table className="table table-dark">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Year</th>
-                    <th>Genre</th>
-                    <th>Company</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {gameList}
-                </tbody>
-            </table>
+                    <tbody>
+                    {gameList}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

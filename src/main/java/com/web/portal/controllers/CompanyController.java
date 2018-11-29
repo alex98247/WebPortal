@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/company")
@@ -27,10 +28,15 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<Company> createCompany(@ModelAttribute Company company) throws URISyntaxException {
+    public ResponseEntity<Company> createCompany(@RequestBody Company company) throws URISyntaxException {
         companyRepository.save(company);
         return ResponseEntity.created(new URI("/api/company/" + company.getId()))
                 .body(company);
+    }
+
+    @GetMapping
+    public Collection<Company> getCompanies(){
+        return companyRepository.findAll();
     }
 
     @PutMapping
