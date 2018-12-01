@@ -1,64 +1,67 @@
 package com.web.portal.models;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import java.util.List;
+
+@Data
 public class Pager {
+    private boolean hasPreviousPage;
+    private int currentPage;
+    private boolean hasNextPage;
+    private int pageSize;
+    private List<Game> games;
 
-    private int buttonsToShow = 5;
+    public Pager(){}
 
-    private int startPage;
-
-    private int endPage;
-
-    public Pager(int totalPages, int currentPage, int buttonsToShow) {
-        setButtonsToShow(buttonsToShow);
-        int halfPagesToShow = getButtonsToShow() / 2;
-        if (totalPages <= getButtonsToShow()) {
-            setStartPage(1);
-            setEndPage(totalPages);
-        } else if (currentPage - halfPagesToShow <= 0) {
-            setStartPage(1);
-            setEndPage(getButtonsToShow());
-        } else if (currentPage + halfPagesToShow == totalPages) {
-            setStartPage(currentPage - halfPagesToShow);
-            setEndPage(totalPages);
-        } else if (currentPage + halfPagesToShow > totalPages) {
-            setStartPage(totalPages - getButtonsToShow() + 1);
-            setEndPage(totalPages);
-        } else {
-            setStartPage(currentPage - halfPagesToShow);
-            setEndPage(currentPage + halfPagesToShow);
-        }
+    public Pager(List<Game> games, boolean hasPreviousPage, int currentPage, boolean hasNextPage, int size) {
+        this.games = games;
+        this.currentPage = currentPage;
+        this.hasNextPage = hasNextPage;
+        this.hasPreviousPage = hasPreviousPage;
+        this.pageSize = size;
     }
 
-    public int getButtonsToShow() {
-        return buttonsToShow;
+    public List<Game> getGames() {
+        return games;
     }
 
-    public void setButtonsToShow(int buttonsToShow) {
-        if (buttonsToShow % 2 != 0) {
-            this.buttonsToShow = buttonsToShow;
-        } else {
-            throw new IllegalArgumentException("Must be an odd value!");
-        }
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 
-    public int getStartPage() {
-        return startPage;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setStartPage(int startPage) {
-        this.startPage = startPage;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public int getEndPage() {
-        return endPage;
+    public boolean isHasNextPage() {
+        return hasNextPage;
     }
 
-    public void setEndPage(int endPage) {
-        this.endPage = endPage;
+    public void setHasNextPage(boolean hasNextPage) {
+        this.hasNextPage = hasNextPage;
     }
 
-    @Override
-    public String toString() {
-        return "Pager [startPage=" + startPage + ", endPage=" + endPage + "]";
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public boolean isHasPreviousPage() {
+        return hasPreviousPage;
+    }
+
+    public void setHasPreviousPage(boolean hasPreviousPage) {
+        this.hasPreviousPage = hasPreviousPage;
     }
 }
