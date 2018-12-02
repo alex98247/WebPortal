@@ -3,7 +3,7 @@ import {Button} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Menu from './Menu';
 
-class GameList extends Component {
+class CompanyList extends Component {
 
     state = {pager: {currentPage: 0, games: [], pageSize: 5, hasNextPage: '', hasPreviousPage: ''}};
 
@@ -15,9 +15,9 @@ class GameList extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(async () => {
-            const {pager} = this.state;
-            await this.reload(pager.pageSize, pager.currentPage);
+        }).then(() => {
+            let updatedGames = [...this.state.pager.games].filter(i => i.id !== id);
+            this.setState({pager: updatedGames});
         });
     }
 
@@ -61,7 +61,7 @@ class GameList extends Component {
             next
         </Button> : '';
         const previousButton = (pager.hasPreviousPage) ? <Button variant="contained" component="span"
-                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
+                                                                 onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
             previous
         </Button> : '';
 
@@ -94,4 +94,4 @@ class GameList extends Component {
     }
 }
 
-export default GameList;
+export default CompanyList;
