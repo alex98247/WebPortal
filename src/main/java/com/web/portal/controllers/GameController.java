@@ -8,8 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
@@ -24,7 +22,7 @@ public class GameController {
     }
 
     @GetMapping
-    public Pager index(@RequestParam("size") Optional<Integer> pageSize, @RequestParam("page") Optional<Integer> pageNumber) {
+    public ResponseEntity<Pager> index(@RequestParam("size") Optional<Integer> pageSize, @RequestParam("page") Optional<Integer> pageNumber) {
 
         int pageId = (pageNumber.isPresent()) ? pageNumber.get() : 0;
         int size = (pageSize.isPresent()) ? pageSize.get() : 5;
@@ -32,20 +30,19 @@ public class GameController {
         Page<Game> page = gameRepository.findAll(new PageRequest(pageId, size));
 
         boolean hasPreviousPage = pageId != 0;
-        boolean hasNextPage = page.getTotalPages() != pageId;
+        boolean hasNextPage = page.getTotalPages()-1 > pageId;
 
-        Pager pager = new Pager(page.getContent(), hasPreviousPage, pageId, hasNextPage, size);
+        Pager pager = new Pager(page.getContent(), hasPreviousPage, pageId, hasNextPage, size, page.getTotalPages());
 
-        return pager;
+        return ResponseEntity.ok().body(pager);
     }
 
 
 
     @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody Game game) throws URISyntaxException {
+    public ResponseEntity<Game> createGame(@RequestBody Game game) {
         gameRepository.save(game);
-        return ResponseEntity.created(new URI("/api/game/" + game.getId()))
-                .body(game);
+        return ResponseEntity.ok().body(game);
     }
 
     @PutMapping

@@ -1,10 +1,7 @@
 package com.web.portal.models;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @Data
@@ -13,16 +10,19 @@ public class Pager {
     private int currentPage;
     private boolean hasNextPage;
     private int pageSize;
+    private int pagesCount;
     private List<Game> games;
 
-    public Pager(){}
+    public Pager() {
+    }
 
-    public Pager(List<Game> games, boolean hasPreviousPage, int currentPage, boolean hasNextPage, int size) {
+    public Pager(List<Game> games, boolean hasPreviousPage, int currentPage, boolean hasNextPage, int size, int pagesCount) {
         this.games = games;
         this.currentPage = currentPage;
         this.hasNextPage = hasNextPage;
         this.hasPreviousPage = hasPreviousPage;
         this.pageSize = size;
+        this.pagesCount = pagesCount;
     }
 
     public List<Game> getGames() {
@@ -63,5 +63,13 @@ public class Pager {
 
     public void setHasPreviousPage(boolean hasPreviousPage) {
         this.hasPreviousPage = hasPreviousPage;
+    }
+
+    public int getPagesCount() {
+        return pagesCount;
+    }
+
+    public void setPagesCount(int pagesCount) {
+        this.pagesCount = pagesCount;
     }
 }

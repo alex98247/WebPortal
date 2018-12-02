@@ -6,10 +6,11 @@ class Menu extends Component {
 
     render() {
         return (
-            <div>
+            <nav className="navbar navbar-dark bg-dark pull-left">
                 <Button tag={Link} to={"/games"} className="btn btn-success">Add Game</Button>
                 <Button tag={Link} to={"/companies"} className="btn btn-success">Add Company</Button>
-            </div>
+                <span className="navbar-text">Navbar text with an inline element</span>
+            </nav>
         );
     }
 }

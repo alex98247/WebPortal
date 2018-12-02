@@ -31,17 +31,6 @@ class EditCompany extends Component {
         this.setState({company: company});
     }
 
-    async remove(id) {
-
-        await fetch(`/api/company/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
     async handleSubmit(event) {
         event.preventDefault();
         const {company} = this.state;
@@ -73,7 +62,6 @@ class EditCompany extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Button color="primary" type="submit">Save</Button>
-                    <Button color="danger" onClick={() => this.remove(company.id)} >Delete</Button>
                 </FormGroup>
             </Form>
         )

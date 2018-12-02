@@ -5,8 +5,6 @@ import com.web.portal.repository.CompanyRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 @RestController
@@ -20,7 +18,7 @@ public class CompanyController {
     }
 
 
-    @GetMapping("/get/{companyId}")
+    @GetMapping("/{companyId}")
     public Company getCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
         Company company = companyRepository.findFirstById(id);
@@ -28,10 +26,9 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<Company> createCompany(@RequestBody Company company) throws URISyntaxException {
+    public ResponseEntity<Company> createCompany(@RequestBody Company company) {
         companyRepository.save(company);
-        return ResponseEntity.created(new URI("/api/company/" + company.getId()))
-                .body(company);
+        return ResponseEntity.ok().body(company);
     }
 
     @GetMapping

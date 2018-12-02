@@ -5,7 +5,7 @@ import Menu from './Menu';
 
 class GameList extends Component {
 
-    state = {games: []};
+    state = {pager: {currentPage: 0, games: [], pageSize: 5, hasNextPage: '', hasPreviousPage: ''}};
 
     async remove(id) {
 
@@ -16,20 +16,27 @@ class GameList extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            let updatedGames = [...this.state.games].filter(i => i.id !== id);
-            this.setState({games: updatedGames});
+            let updatedGames = [...this.state.pager.games].filter(i => i.id !== id);
+            this.setState({pager: updatedGames});
         });
     }
 
-    async componentDidMount() {
-        const response = await fetch('/api/game');
+    async reload(size, page) {
+        console.log('/api/game?size=' + size + '&page=' + page);
+        const response = await fetch('/api/game?size=' + size + '&page=' + page);
         const body = await response.json();
-        this.setState({games: body});
+        this.setState({pager: body});
+    }
+
+    async componentDidMount() {
+        await this.reload(5, 0);
     }
 
     render() {
 
-        const {games} = this.state;
+        const {pager} = this.state;
+        const games = pager.games;
+        console.log(games);
 
         const gameList = games.map(game =>
             <tr>
@@ -48,6 +55,15 @@ class GameList extends Component {
                 <td><Button color="danger" onClick={() => this.remove(game.id)}>Delete</Button></td>
             </tr>
         );
+
+        const nextButton = (pager.hasNextPage) ? <Button variant="contained" component="span"
+                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage + 1)}>
+            next
+        </Button> : '';
+        const previousButton = (pager.hasPreviousPage) ? <Button variant="contained" component="span"
+                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
+            previous
+        </Button> : '';
 
         return (
             <div>
@@ -69,6 +85,10 @@ class GameList extends Component {
                     {gameList}
                     </tbody>
                 </table>
+                <div>
+                    {previousButton}
+                    {nextButton}
+                </div>
             </div>
         );
     }
