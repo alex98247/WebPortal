@@ -24,6 +24,7 @@ public class Game {
     private Genre genre;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "company_id")
     private Company company;
 

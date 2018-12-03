@@ -5,65 +5,44 @@ import Menu from './Menu';
 
 class CompanyList extends Component {
 
-    state = {pager: {currentPage: 0, games: [], pageSize: 5, hasNextPage: '', hasPreviousPage: ''}};
+    state = {companies: []};
 
     async remove(id) {
 
-        await fetch(`/api/game/${id}`, {
+        await fetch(`/api/company/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            let updatedGames = [...this.state.pager.games].filter(i => i.id !== id);
-            this.setState({pager: updatedGames});
+            let updatedCompanies = [...this.state.companies].filter(i => i.id !== id);
+            this.setState({companies: updatedCompanies});
         });
     }
 
-    async reload(size, page) {
-        console.log('/api/game?size=' + size + '&page=' + page);
-        const response = await fetch('/api/game?size=' + size + '&page=' + page);
-        const body = await response.json();
-        this.setState({pager: body});
-    }
-
     async componentDidMount() {
-        await this.reload(5, 0);
-    }
+        const response = await fetch('/api/company');
+        const body = await response.json();
+        this.setState({companies: body});    }
 
     render() {
 
-        const {pager} = this.state;
-        const games = pager.games;
-        console.log(games);
+        const {companies} = this.state;
 
-        const gameList = games.map(game =>
+        const companyList = companies.map(company =>
             <tr>
-                <td>{game.id}</td>
-                <td>{game.name}</td>
-                <td>{game.year}</td>
-                <td>{game.genre}</td>
-                <td><Link to={{
-                    pathname: "/companies/" + game.company.id,
-                    state: {company: game.company}
-                }}>{game.company.name}</Link></td>
+                <td>{company.id}</td>
+                <td>{company.name}</td>
+                <td>{company.country}</td>
                 <td><Button color="primary" tag={Link} to={{
-                    pathname: "/games/" + game.id,
-                    state: {game: game}
+                    pathname: "/company/" + company.id,
+                    state: {company: company}
                 }}>Edit</Button></td>
-                <td><Button color="danger" onClick={() => this.remove(game.id)}>Delete</Button></td>
+                <td><Button color="danger" onClick={() => this.remove(company.id)}>Delete</Button></td>
             </tr>
         );
 
-        const nextButton = (pager.hasNextPage) ? <Button variant="contained" component="span"
-                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage + 1)}>
-            next
-        </Button> : '';
-        const previousButton = (pager.hasPreviousPage) ? <Button variant="contained" component="span"
-                                                                 onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
-            previous
-        </Button> : '';
 
         return (
             <div>
@@ -73,22 +52,16 @@ class CompanyList extends Component {
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Year</th>
-                        <th>Genre</th>
-                        <th>Company</th>
+                        <th>Country</th>
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {gameList}
+                    {companyList}
                     </tbody>
                 </table>
-                <div>
-                    {previousButton}
-                    {nextButton}
-                </div>
             </div>
         );
     }

@@ -17,8 +17,8 @@ class App extends Component {
                 <Route path='/companies' exact={true} component={CompanyList}/>
                 <Route path='/games/:id' component={EditGame}/>
                 <Route path='/games' component={EditGame}/>
-                <Route path='/companies' component={EditCompany}/>
-                <Route path='/companies/:id' component={EditCompany}/>
+                <Route path='/company' component={EditCompany}/>
+                <Route path='/company/:id' component={EditCompany}/>
             </Switch>
         </Router>
         );
