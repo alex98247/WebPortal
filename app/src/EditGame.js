@@ -63,6 +63,8 @@ class EditGame extends Component {
             },
             body: JSON.stringify(game),
             credentials: 'include'
+        }).then(()=>{
+            setTimeout(() => window.location.href = '/' , 5 * 1000);
         });
     }
 

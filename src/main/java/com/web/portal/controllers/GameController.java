@@ -52,7 +52,7 @@ public class GameController {
     }
 
     @DeleteMapping("/{gameId}")
-    public ResponseEntity<Game> deleteGame(@PathVariable("gameId") String gameId) {
+    public ResponseEntity deleteGame(@PathVariable("gameId") String gameId) {
         long id = Long.parseLong(gameId);
         gameRepository.deleteById(id);
         return ResponseEntity.ok().build();

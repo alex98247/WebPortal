@@ -43,6 +43,8 @@ class EditCompany extends Component {
             },
             body: JSON.stringify(company),
             credentials: 'include'
+        }).then(()=>{
+            setTimeout(() => window.location.href = '/companies' , 5 * 1000);
         });
     }
 

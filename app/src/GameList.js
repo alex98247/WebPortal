@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Menu from './Menu';
+import Footer from './Footer';
 
 class GameList extends Component {
 
@@ -9,13 +10,7 @@ class GameList extends Component {
 
     async remove(id) {
         if (window.confirm("Do you want to delete game?")) {
-            await fetch(`/api/game/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then(async () => {
+            await fetch(`/api/game/${id}`, {method: 'DELETE'}).then(async () => {
                 const {pager} = this.state;
                 await this.reload(pager.pageSize, pager.currentPage);
             });
@@ -39,22 +34,22 @@ class GameList extends Component {
 
         console.log(pager);
         const gameList = games.map(game => {
-            return(
-            <tr>
-                <td>{game.id}</td>
-                <td>{game.name}</td>
-                <td>{game.year}</td>
-                <td>{game.genre}</td>
-                <td><Link to={{
-                    pathname: "/company/" + (game.company == null) ? '' : game.company.name,
-                    state: {company: game.company}
-                }}>{(game.company == null) ? '-' : game.company.name}</Link></td>
-                <td><Button color="primary" tag={Link} to={{
-                    pathname: "/games/" + game.id,
-                    state: {game: game}
-                }}>Edit</Button></td>
-                <td><Button color="danger" onClick={() => this.remove(game.id)}>Delete</Button></td>
-            </tr>);
+            return (
+                <tr>
+                    <td>{game.id}</td>
+                    <td>{game.name}</td>
+                    <td>{game.year}</td>
+                    <td>{game.genre}</td>
+                    <td><Link to={{
+                        pathname: "/company/" + (game.company == null) ? '' : game.company.name,
+                        state: {company: game.company}
+                    }}>{(game.company == null) ? '-' : game.company.name}</Link></td>
+                    <td><Button color="primary" tag={Link} to={{
+                        pathname: "/games/" + game.id,
+                        state: {game: game}
+                    }}>Edit</Button></td>
+                    <td><Button color="danger" onClick={() => this.remove(game.id)}>Delete</Button></td>
+                </tr>);
         });
 
         const nextButton = (pager.hasNextPage) ? <Button variant="contained" component="span"
@@ -69,7 +64,7 @@ class GameList extends Component {
         return (
             <div>
                 <Menu/>
-                <table className="table table-dark">
+                <table style={{marginBottom: 0}} className="table table-dark">
                     <thead>
                     <tr>
                         <th>Id</th>
@@ -86,10 +81,11 @@ class GameList extends Component {
                     {gameList}
                     </tbody>
                 </table>
-                <div>
+                <div width="100%" className="bg-dark">
                     {previousButton}
                     {nextButton}
                 </div>
+                <Footer />
             </div>
         );
     }

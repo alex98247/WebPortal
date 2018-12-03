@@ -1,5 +1,6 @@
 package com.web.portal.repository;
 
+import com.web.portal.models.Company;
 import com.web.portal.models.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,6 @@ public interface GameRepository extends PagingAndSortingRepository<Game, Long> {
 
     @Override
     List<Game> findAll();
+
+    List<Game> findByCompanyId(long companyId);
 }

@@ -2,29 +2,32 @@ import React, {Component} from 'react';
 import {Button} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Menu from './Menu';
+import Footer from './Footer';
 
 class CompanyList extends Component {
 
     state = {companies: []};
 
     async remove(id) {
+        if (window.confirm("Do you want to delete company?")) {
 
-        await fetch(`/api/company/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            let updatedCompanies = [...this.state.companies].filter(i => i.id !== id);
-            this.setState({companies: updatedCompanies});
-        });
+            await fetch(`/api/company/${id}`, {method: 'DELETE'}).then((response) => {
+                if (response.ok) {
+                    let updatedCompanies = [...this.state.companies].filter(i => i.id !== id);
+                    this.setState({companies: updatedCompanies});
+                }
+                else {
+                    alert("Fail to delete company!!!");
+                }
+            });
+        }
     }
 
     async componentDidMount() {
         const response = await fetch('/api/company');
         const body = await response.json();
-        this.setState({companies: body});    }
+        this.setState({companies: body});
+    }
 
     render() {
 
@@ -62,6 +65,7 @@ class CompanyList extends Component {
                     {companyList}
                     </tbody>
                 </table>
+                <Footer />
             </div>
         );
     }

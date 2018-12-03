@@ -6,12 +6,16 @@ class Menu extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-dark bg-dark pull-left">
-                <Button tag={Link} to={"/"} className="nav-item">Game List</Button>
-                <Button tag={Link} to={"/companies"} className="nav-item">Company List</Button>
-                <Button tag={Link} to={"/games"} className="btn btn-success">Add Game</Button>
-                <Button tag={Link} to={"/company"} className="btn btn-success">Add Company</Button>
-                <span className="navbar-text">Navbar text with an inline element</span>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a className="navbar-brand" href="#">Menu</a>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                        <Link tag={Link} to={"/"} className="nav-item nav-link">Game List</Link>
+                        <Link tag={Link} to={"/companies"} className="nav-item nav-link">Company List</Link>
+                        <Button tag={Link} to={"/games"} className="btn btn-success" style={{marginLeft: 20}}>Add Game</Button>
+                        <Button tag={Link} to={"/company"} className="btn btn-success" style={{marginLeft: 10}}>Add Company</Button>
+                    </div>
+                </div>
             </nav>
         );
     }

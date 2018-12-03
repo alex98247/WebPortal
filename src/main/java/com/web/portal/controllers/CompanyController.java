@@ -2,6 +2,7 @@ package com.web.portal.controllers;
 
 import com.web.portal.models.Company;
 import com.web.portal.repository.CompanyRepository;
+import com.web.portal.repository.GameRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,11 @@ import java.util.Collection;
 public class CompanyController {
 
     private CompanyRepository companyRepository;
+    private GameRepository gameRepository;
 
-    public CompanyController(CompanyRepository companyRepository) {
+    public CompanyController(CompanyRepository companyRepository, GameRepository gameRepository) {
         this.companyRepository = companyRepository;
+        this.gameRepository = gameRepository;
     }
 
 
@@ -43,9 +46,14 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{companyId}")
-    public ResponseEntity<Company> deleteCompany(@PathVariable("companyId") String companyId) {
+    public ResponseEntity deleteCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
-        companyRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        boolean canDelete = gameRepository.findByCompanyId(id).isEmpty();
+        if(canDelete) {
+            companyRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
