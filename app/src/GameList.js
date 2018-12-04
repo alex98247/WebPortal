@@ -6,7 +6,7 @@ import Footer from './Footer';
 
 class GameList extends Component {
 
-    state = {pager: {currentPage: 0, games: [], pageSize: 5, hasNextPage: '', hasPreviousPage: ''}};
+    state = {pager: {currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
 
     async remove(id) {
         if (window.confirm("Do you want to delete game?")) {
@@ -15,6 +15,7 @@ class GameList extends Component {
                 await this.reload(pager.pageSize, pager.currentPage);
             });
         }
+
     }
 
     async reload(size, page) {
@@ -24,7 +25,7 @@ class GameList extends Component {
     }
 
     async componentDidMount() {
-        await this.reload(5, 0);
+        await this.reload(10, 0);
     }
 
     render() {
