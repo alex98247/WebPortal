@@ -17,7 +17,7 @@ class CompanyList extends Component {
                     this.setState({companies: updatedCompanies});
                 }
                 else {
-                    alert("Fail to delete company!!!");
+                    alert("Can`t delete this company: it has games");
                 }
             });
         }
