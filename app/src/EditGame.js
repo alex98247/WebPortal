@@ -52,6 +52,7 @@ class EditGame extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         const {game} = this.state;
+        this.setState({ isLoading: true });
 
         console.log(game)
 
@@ -64,9 +65,11 @@ class EditGame extends Component {
             body: JSON.stringify(game),
             credentials: 'include'
         }).then(()=>{
-            setTimeout(() => window.location.href = '/' , 5 * 1000);
+            setTimeout(() => window.location.href = '/' , 1 * 1000);
         });
     }
+
+
 
     render() {
         const {game, genres, companies} = this.state;
@@ -102,7 +105,7 @@ class EditGame extends Component {
                     </Input>
                 </FormGroup>
                 <FormGroup>
-                    <Button color="primary" type="submit">Save</Button>
+                    <Button color="primary" className="btn" type="submit">Save</Button>
                 </FormGroup>
             </Form>
         )
