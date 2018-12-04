@@ -18,8 +18,8 @@ class Footer extends Component {
                         <div className="col-12 col-md-12 col-lg-6 mb-2 text-right">
                             <h6 className="text-uppercase">Follow us for more information</h6>
                             <ul className="nav flex-column">
-                                <li>Alex Mironov</li>
-                                <li>Sema Putnikov</li>
+                                <li><a href="https://vk.com/bermar_alex">Alex Mironov</a></li>
+                                <li><a href="https://vk.com/semaputnik">Sema Putnikov</a></li>
                             </ul>
                         </div>
                     </div>
