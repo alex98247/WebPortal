@@ -54,7 +54,7 @@ class GameList extends Component {
                 </tr>);
         });
 
-        const nextButton = (pager.hasNextPage) ? <Button variant="contained" component="span"
+        const nextButton = (pager.hasNextPage) ? <Button style={{marginLeft: 5}} variant="contained" component="span"
                                                          onClick={() => this.reload(pager.pageSize, pager.currentPage + 1)}>
             next
         </Button> : '';
@@ -66,7 +66,7 @@ class GameList extends Component {
         const pageList =  [];
 
         for (let i = 1; i <= pager.pagesCount; i++) {
-            pageList.push(<Button onClick={() => this.reload(pager.pageSize, (i-1))}>{i}</Button>);
+            pageList.push(<Button style={{marginLeft: 5}} onClick={() => this.reload(pager.pageSize, (i-1))}>{i}</Button>);
         }
 
         return (
