@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
-import {Button} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Menu from './Menu';
 import Footer from './Footer';
 
 class GameList extends Component {
 
-    state = {pager: {pagesCount: 0, currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
+    state = {sort: 'id', pager: {pagesCount: 0, currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
+
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
     async remove(id) {
         if (window.confirm("Do you want to delete game?")) {
@@ -18,9 +24,18 @@ class GameList extends Component {
 
     }
 
-    async reload(size, page) {
-        console.log(page)
-        const response = await fetch('/api/game?size=' + size + '&page=' + page);
+    handleChange(event) {
+        const target = event.target;
+        this.setState({sort: target.value});
+    }
+
+    async handleSubmit(event) {
+        event.preventDefault();
+        await this.reload(this.state.pager.pageSize, this.state.pager.currentPage, this.state.sort)
+    }
+
+    async reload(size, page, sort='id') {
+        const response = await fetch('/api/game?size=' + size + '&page=' + page + '&sort=' + sort);
         const body = await response.json();
         this.setState({pager: body});
     }
@@ -32,9 +47,9 @@ class GameList extends Component {
     render() {
 
         const {pager} = this.state;
+        const {sort} = this.state;
         const games = pager.games;
 
-        console.log(pager);
         const gameList = games.map(game => {
             return (
                 <tr>
@@ -42,7 +57,7 @@ class GameList extends Component {
                     <td>{game.name}</td>
                     <td>{game.year}</td>
                     <td>{game.genre}</td>
-                    <td><Link style={{color: '#FFFFFF' }} to={{
+                    <td><Link style={{color: '#FFFFFF'}} to={{
                         pathname: "/company/" + ((game.company == null) ? '' : game.company.name),
                         state: {company: game.company}
                     }}>{(game.company == null) ? '-' : game.company.name}</Link></td>
@@ -55,23 +70,37 @@ class GameList extends Component {
         });
 
         const nextButton = (pager.hasNextPage) ? <Button style={{marginLeft: 5}} variant="contained" component="span"
-                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage + 1)}>
+                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage + 1, sort)}>
             next
         </Button> : '';
         const previousButton = (pager.hasPreviousPage) ? <Button variant="contained" component="span"
-                                                                 onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
+                                                                 onClick={() => this.reload(pager.pageSize, pager.currentPage - 1, sort)}>
             previous
         </Button> : '';
 
-        const pageList =  [];
+        const pageList = [];
 
         for (let i = 1; i <= pager.pagesCount; i++) {
-            pageList.push(<Button style={{marginLeft: 5}} onClick={() => this.reload(pager.pageSize, (i-1))}>{i}</Button>);
+            pageList.push(<Button style={{marginLeft: 5}}
+                                  onClick={() => this.reload(pager.pageSize, (i - 1), sort)}>{i}</Button>);
         }
 
         return (
             <div>
                 <Menu/>
+                <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                        <Label for="sort">Sort by</Label>
+                        <Input type="select" name="sort" id="sort" onChange={this.handleChange}>
+                            <option>id</option>
+                            <option>name</option>
+                            <option>year</option>
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Button color="primary" className="btn" type="submit">Sort</Button>
+                    </FormGroup>
+                </Form>
                 <table style={{marginBottom: 0}} className="table table-dark">
                     <thead>
                     <tr>
@@ -94,7 +123,7 @@ class GameList extends Component {
                     {pageList}
                     {nextButton}
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         );
     }

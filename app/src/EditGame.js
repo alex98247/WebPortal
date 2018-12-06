@@ -52,9 +52,6 @@ class EditGame extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         const {game} = this.state;
-        this.setState({ isLoading: true });
-
-        console.log(game)
 
         await fetch('/api/game', {
             method: (game.id) ? 'PUT' : 'POST',
