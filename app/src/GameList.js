@@ -6,7 +6,7 @@ import Footer from './Footer';
 
 class GameList extends Component {
 
-    state = {pager: {currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
+    state = {pager: {pagesCount: 0, currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
 
     async remove(id) {
         if (window.confirm("Do you want to delete game?")) {
@@ -19,6 +19,7 @@ class GameList extends Component {
     }
 
     async reload(size, page) {
+        console.log(page)
         const response = await fetch('/api/game?size=' + size + '&page=' + page);
         const body = await response.json();
         this.setState({pager: body});
@@ -41,8 +42,8 @@ class GameList extends Component {
                     <td>{game.name}</td>
                     <td>{game.year}</td>
                     <td>{game.genre}</td>
-                    <td><Link to={{
-                        pathname: "/company/" + (game.company == null) ? '' : game.company.name,
+                    <td><Link style={{color: '#FFFFFF' }} to={{
+                        pathname: "/company/" + ((game.company == null) ? '' : game.company.name),
                         state: {company: game.company}
                     }}>{(game.company == null) ? '-' : game.company.name}</Link></td>
                     <td><Button color="primary" tag={Link} to={{
@@ -61,6 +62,12 @@ class GameList extends Component {
                                                                  onClick={() => this.reload(pager.pageSize, pager.currentPage - 1)}>
             previous
         </Button> : '';
+
+        const pageList =  [];
+
+        for (let i = 1; i <= pager.pagesCount; i++) {
+            pageList.push(<Button onClick={() => this.reload(pager.pageSize, (i-1))}>{i}</Button>);
+        }
 
         return (
             <div>
@@ -82,8 +89,9 @@ class GameList extends Component {
                     {gameList}
                     </tbody>
                 </table>
-                <div width="100%" className="bg-dark">
+                <div align="center" width="100%" className="bg-dark">
                     {previousButton}
+                    {pageList}
                     {nextButton}
                 </div>
                 <Footer />

@@ -18,7 +18,7 @@ class EditCompany extends Component {
 
 
     async componentDidMount() {
-        const company = (this.props.location.state == null) ? this.emptyCompany : this.props.location.state.company;
+        const company = (this.props.location.state == null || this.props.location.state.company == null) ? this.emptyCompany : this.props.location.state.company;
         this.setState({company: company});
     }
 
