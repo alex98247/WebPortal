@@ -1,7 +1,12 @@
 package com.web.portal.models;
 
+import lombok.Data;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "game")
 public class Game {
@@ -18,7 +23,8 @@ public class Game {
     @Column(columnDefinition = "smallint")
     private Genre genre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "company_id")
     private Company company;
 

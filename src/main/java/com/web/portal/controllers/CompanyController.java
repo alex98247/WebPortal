@@ -2,66 +2,58 @@ package com.web.portal.controllers;
 
 import com.web.portal.models.Company;
 import com.web.portal.repository.CompanyRepository;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.web.portal.repository.GameRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.Collection;
 
-@Controller
+@RestController
+@RequestMapping("/api/company")
 public class CompanyController {
 
     private CompanyRepository companyRepository;
+    private GameRepository gameRepository;
 
-    public CompanyController(CompanyRepository companyRepository) {
+    public CompanyController(CompanyRepository companyRepository, GameRepository gameRepository) {
         this.companyRepository = companyRepository;
+        this.gameRepository = gameRepository;
     }
 
 
-    @GetMapping("/company/get/{companyId}")
-    public String getCompany(Model model, @PathVariable("companyId") String companyId) {
+    @GetMapping("/{companyId}")
+    public Company getCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
         Company company = companyRepository.findFirstById(id);
-        model.addAttribute("company", company);
-        return "company";
+        return company;
     }
 
-    @PostMapping("/company/create")
-    public String createCompany(@ModelAttribute Company company) {
+    @PostMapping
+    public ResponseEntity<Company> createCompany(@RequestBody Company company) {
         companyRepository.save(company);
-        return "redirect:/company/get/" + company.getId();
+        return ResponseEntity.ok().body(company);
     }
 
-    @GetMapping("/company/create")
-    public String createCompany() {
-        return "addCompany";
+    @GetMapping
+    public Collection<Company> getCompanies(){
+        return companyRepository.findAll();
     }
 
-    @GetMapping("/company/update/{companyId}")
-    public String updateCompanyGet(Model model, @PathVariable("companyId") String companyId) {
+    @PutMapping
+    public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
+        companyRepository.save(company);
+            return ResponseEntity.ok().body(company);
+    }
+
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity deleteCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
-        Optional<Company> company = companyRepository.findById(id);
-        if(company.isPresent()) {
-            model.addAttribute("company", company.get());
-            return "editCompany";
+        boolean canDelete = gameRepository.findByCompanyId(id).isEmpty();
+        if(canDelete) {
+            companyRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.badRequest().build();
         }
-        return "error";
-    }
-
-    @PostMapping("/company/update")
-    public String updateCompany(@ModelAttribute Company company) {
-        companyRepository.save(company);
-        return "redirect:/";
-    }
-
-
-    @GetMapping("/company/delete/{companyId}")
-    public String deleteCompany(@PathVariable("companyId") String companyId) {
-        long id = Long.parseLong(companyId);
-        companyRepository.deleteById(id);
-        return "redirect:/";
     }
 }
