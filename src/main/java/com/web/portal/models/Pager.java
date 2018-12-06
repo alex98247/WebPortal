@@ -68,4 +68,8 @@ public class Pager {
     public void setPagesCount(int pagesCount) {
         this.pagesCount = pagesCount;
     }
+
+    public boolean isHasNextPage() {
+        return hasNextPage;
+    }
 }
