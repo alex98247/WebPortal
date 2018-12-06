@@ -1,8 +1,8 @@
 package com.web.portal.controllers;
 
+import com.web.portal.Services.CompanyService;
+import com.web.portal.Services.GameService;
 import com.web.portal.models.Company;
-import com.web.portal.repository.CompanyRepository;
-import com.web.portal.repository.GameRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,45 +12,45 @@ import java.util.Collection;
 @RequestMapping("/api/company")
 public class CompanyController {
 
-    private CompanyRepository companyRepository;
-    private GameRepository gameRepository;
+    private CompanyService companyService;
+    private GameService gameService;
 
-    public CompanyController(CompanyRepository companyRepository, GameRepository gameRepository) {
-        this.companyRepository = companyRepository;
-        this.gameRepository = gameRepository;
+    public CompanyController(CompanyService companyService, GameService gameService) {
+        this.companyService = companyService;
+        this.gameService = gameService;
     }
 
 
     @GetMapping("/{companyId}")
     public Company getCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
-        Company company = companyRepository.findFirstById(id);
+        Company company = companyService.findFirstById(id);
         return company;
     }
 
     @PostMapping
     public ResponseEntity<Company> createCompany(@RequestBody Company company) {
-        companyRepository.save(company);
+        companyService.saveCompany(company);
         return ResponseEntity.ok().body(company);
     }
 
     @GetMapping
     public Collection<Company> getCompanies(){
-        return companyRepository.findAll();
+        return companyService.findAll();
     }
 
     @PutMapping
     public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
-        companyRepository.save(company);
+        companyService.saveCompany(company);
             return ResponseEntity.ok().body(company);
     }
 
     @DeleteMapping("/{companyId}")
     public ResponseEntity deleteCompany(@PathVariable("companyId") String companyId) {
         long id = Long.parseLong(companyId);
-        boolean canDelete = gameRepository.findByCompanyId(id).isEmpty();
+        boolean canDelete = gameService.canDeleteGame(id);
         if(canDelete) {
-            companyRepository.deleteById(id);
+            companyService.deleteById(id);
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.badRequest().build();

@@ -1,62 +1,53 @@
 package com.web.portal.controllers;
 
+import com.web.portal.Services.GameService;
+import com.web.portal.Services.GameServiceImpl;
 import com.web.portal.models.Game;
 import com.web.portal.models.Pager;
-import com.web.portal.repository.GameRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Service;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
 
-    private GameRepository gameRepository;
+    private GameService gameService;
 
 
-    public GameController(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @GetMapping
-    public ResponseEntity<Pager> index(@RequestParam("size") Optional<Integer> pageSize, @RequestParam("page") Optional<Integer> pageNumber, @RequestParam("sort") Optional<String> sort) {
+    public ResponseEntity<Pager> index(@RequestParam("size") Optional<Integer> pageSize,
+                                       @RequestParam("page") Optional<Integer> pageNumber,
+                                       @RequestParam("sort") Optional<String> sort,
+                                       @RequestParam("name") Optional<String> name) {
 
-        int pageId = (pageNumber.isPresent()) ? pageNumber.get() : 0;
-        int size = (pageSize.isPresent()) ? pageSize.get() : 5;
-        String sortParam = (sort.isPresent()) ? sort.get() : "id";
-
-        Page<Game> page = gameRepository.findAll(PageRequest.of(pageId, size, Sort.by(sortParam)));
-
-        boolean hasPreviousPage = pageId != 0;
-        boolean hasNextPage = page.getTotalPages()-1 > pageId;
-
-        Pager pager = new Pager(page.getContent(), hasPreviousPage, pageId, hasNextPage, size, page.getTotalPages());
-
+        Pager pager = gameService.findSorted(pageSize, pageNumber, sort, name);
         return ResponseEntity.ok().body(pager);
     }
 
-
-
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        gameRepository.save(game);
+        gameService.saveGame(game);
         return ResponseEntity.ok().body(game);
     }
 
     @PutMapping
     public ResponseEntity<Game> updateGame(@RequestBody Game game) {
-        gameRepository.save(game);
+        gameService.saveGame(game);
         return ResponseEntity.ok().body(game);
     }
 
     @DeleteMapping("/{gameId}")
     public ResponseEntity deleteGame(@PathVariable("gameId") String gameId) {
         long id = Long.parseLong(gameId);
-        gameRepository.deleteById(id);
+        gameService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

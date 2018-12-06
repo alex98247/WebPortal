@@ -1,28 +1,28 @@
 package com.web.portal.controllers;
 
+import com.web.portal.Services.GameService;
 import com.web.portal.models.Company;
 import com.web.portal.models.Game;
 import com.web.portal.models.Genre;
-import com.web.portal.models.Pager;
-import com.web.portal.repository.GameRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class GameControllerTest {
-    private GameRepository gameRepository;
+    private GameService gameService;
     private GameController gameController;
     private Game game;
 
     @Before
     public void setMock() {
         Model model = mock(Model.class);
-        gameRepository = mock(GameRepository.class);
-        gameController = new GameController(gameRepository);
+        gameService = mock(GameService.class);
+        gameController = new GameController(gameService);
         configureGame();
     }
 
@@ -45,21 +45,21 @@ public class GameControllerTest {
     @Test
     public void addGameTest() {
         ResponseEntity result = gameController.createGame(game);
-        verify(gameRepository).save(game);
+        verify(gameService).saveGame(game);
         assertEquals(ResponseEntity.ok().body(game), result);
     }
 
     @Test
     public void updateGameTest() {
         ResponseEntity result = gameController.updateGame(game);
-        verify(gameRepository).save(game);
+        verify(gameService).saveGame(game);
         assertEquals(ResponseEntity.ok().body(game), result);
     }
 
     @Test
     public void removeGameTest() {
         ResponseEntity result = gameController.deleteGame(game.getId().toString());
-        verify(gameRepository).deleteById(game.getId());
+        verify(gameService).deleteById(game.getId());
         assertEquals(ResponseEntity.ok().build(), result);
     }
 }
