@@ -16,12 +16,11 @@ import static org.mockito.Mockito.*;
 public class GameControllerTest {
     private GameRepository gameRepository;
     private GameController gameController;
-    private Model model;
     private Game game;
 
     @Before
     public void setMock() {
-        model = mock(Model.class);
+        Model model = mock(Model.class);
         gameRepository = mock(GameRepository.class);
         gameController = new GameController(gameRepository);
         configureGame();
@@ -48,5 +47,19 @@ public class GameControllerTest {
         ResponseEntity result = gameController.createGame(game);
         verify(gameRepository).save(game);
         assertEquals(ResponseEntity.ok().body(game), result);
+    }
+
+    @Test
+    public void updateGameTest() {
+        ResponseEntity result = gameController.updateGame(game);
+        verify(gameRepository).save(game);
+        assertEquals(ResponseEntity.ok().body(game), result);
+    }
+
+    @Test
+    public void removeGameTest() {
+        ResponseEntity result = gameController.deleteGame(game.getId().toString());
+        verify(gameRepository).deleteById(game.getId());
+        assertEquals(ResponseEntity.ok().build(), result);
     }
 }
