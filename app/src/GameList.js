@@ -6,7 +6,15 @@ import Footer from './Footer';
 
 class GameList extends Component {
 
-    state = {sort: 'id', pager: {pagesCount: 0, currentPage: 0, games: [], pageSize: 10, hasNextPage: '', hasPreviousPage: ''}};
+    state = {
+        pager: {
+            pagesCount: 0,
+            games: [],
+            pageAndSort: {sort: 'id', currentPage: 0, pageSize: 10, find: ""},
+            hasNextPage: '',
+            hasPreviousPage: ''
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -18,7 +26,7 @@ class GameList extends Component {
         if (window.confirm("Do you want to delete game?")) {
             await fetch(`/api/game/${id}`, {method: 'DELETE'}).then(async () => {
                 const {pager} = this.state;
-                await this.reload(pager.pageSize, pager.currentPage);
+                await this.reload(pager.pageAndSort.pageSize, pager.pageAndSort.currentPage);
             });
         }
 
@@ -26,16 +34,36 @@ class GameList extends Component {
 
     handleChange(event) {
         const target = event.target;
-        this.setState({sort: target.value});
+        const value = target.value;
+        const name = target.name;
+        let pager = {...this.state.pager};
+        let pageAndSort = pager.pageAndSort;
+        pageAndSort[name] = value;
+        pager.pageAndSort = pageAndSort;
+        this.setState({pager: pager});
+        console.log(pager);
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        await this.reload(this.state.pager.pageSize, this.state.pager.currentPage, this.state.sort)
+        const {pageAndSort} = this.state.pager;
+        console.log(pageAndSort);
+
+        const response = await fetch('/api/game/find', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pageAndSort),
+            credentials: 'include'
+        });
+        const body = await response.json();
+        this.setState({pager: body});
     }
 
-    async reload(size, page, sort='id') {
-        const response = await fetch('/api/game?size=' + size + '&page=' + page + '&sort=' + sort);
+    async reload(size, page) {
+        const response = await fetch('/api/game?size=' + size + '&page=' + page);
         const body = await response.json();
         this.setState({pager: body});
     }
@@ -49,6 +77,7 @@ class GameList extends Component {
         const {pager} = this.state;
         const {sort} = this.state;
         const games = pager.games;
+        console.log(pager);
 
         const gameList = games.map(game => {
             return (
@@ -70,11 +99,11 @@ class GameList extends Component {
         });
 
         const nextButton = (pager.hasNextPage) ? <Button style={{marginLeft: 5}} variant="contained" component="span"
-                                                         onClick={() => this.reload(pager.pageSize, pager.currentPage + 1, sort)}>
+                                                         onClick={() => this.reload(pager.pageAndSort.pageSize, pager.pageAndSort.currentPage + 1, sort)}>
             next
         </Button> : '';
         const previousButton = (pager.hasPreviousPage) ? <Button variant="contained" component="span"
-                                                                 onClick={() => this.reload(pager.pageSize, pager.currentPage - 1, sort)}>
+                                                                 onClick={() => this.reload(pager.pageAndSort.pageSize, pager.pageAndSort.currentPage - 1, sort)}>
             previous
         </Button> : '';
 
@@ -82,24 +111,30 @@ class GameList extends Component {
 
         for (let i = 1; i <= pager.pagesCount; i++) {
             pageList.push(<Button style={{marginLeft: 5}}
-                                  onClick={() => this.reload(pager.pageSize, (i - 1), sort)}>{i}</Button>);
+                                  onClick={() => this.reload(pager.pageAndSort.pageSize, (i - 1), sort)}>{i}</Button>);
         }
 
         return (
             <div>
                 <Menu/>
-                <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                        <Label for="sort">Sort by</Label>
-                        <Input type="select" name="sort" id="sort" onChange={this.handleChange}>
-                            <option>id</option>
-                            <option>name</option>
-                            <option>year</option>
-                        </Input>
-                    </FormGroup>
-                    <FormGroup>
-                        <Button color="primary" className="btn" type="submit">Sort</Button>
-                    </FormGroup>
+                <Form className={"container"} onSubmit={this.handleSubmit}>
+                        <FormGroup className={"row"}>
+                            <Label className={"col-md-4"} for="sort">Sort by</Label>
+                            <Input className={"col-md-4"} type="select" name="sort" id="sort"
+                                   onChange={this.handleChange}>
+                                <option>id</option>
+                                <option>name</option>
+                                <option>year</option>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup className={"row"}>
+                            <Label className={"col-md-4"} for="find">Find</Label>
+                            <Input className={"col-md-4"} type="text" name="find" id="find"
+                                   onChange={this.handleChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Button color="primary" className="btn" type="submit">Sort and Find</Button>
+                        </FormGroup>
                 </Form>
                 <table style={{marginBottom: 0}} className="table table-dark">
                     <thead>

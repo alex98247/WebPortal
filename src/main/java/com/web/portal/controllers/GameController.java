@@ -1,14 +1,12 @@
 package com.web.portal.controllers;
 
 import com.web.portal.Services.GameService;
-import com.web.portal.Services.GameServiceImpl;
 import com.web.portal.models.Game;
+import com.web.portal.models.PageAndSort;
 import com.web.portal.models.Pager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Service;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,11 +22,16 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<Pager> index(@RequestParam("size") Optional<Integer> pageSize,
-                                       @RequestParam("page") Optional<Integer> pageNumber,
-                                       @RequestParam("sort") Optional<String> sort,
-                                       @RequestParam("name") Optional<String> name) {
+                                       @RequestParam("page") Optional<Integer> pageNumber) {
 
-        Pager pager = gameService.findSorted(pageSize, pageNumber, sort, name);
+        Pager pager = gameService.findSorted(pageSize, pageNumber);
+        return ResponseEntity.ok().body(pager);
+    }
+
+    @PostMapping("find")
+    public ResponseEntity<Pager> find(@RequestBody PageAndSort pageAndSort) {
+
+        Pager pager = gameService.findSorted(pageAndSort);
         return ResponseEntity.ok().body(pager);
     }
 

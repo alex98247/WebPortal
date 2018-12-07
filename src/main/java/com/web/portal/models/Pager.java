@@ -7,22 +7,29 @@ import java.util.List;
 @Data
 public class Pager {
     private boolean hasPreviousPage;
-    private int currentPage;
     private boolean hasNextPage;
-    private int pageSize;
     private int pagesCount;
     private List<Game> games;
+
+    PageAndSort pageAndSort;
 
     public Pager() {
     }
 
-    public Pager(List<Game> games, boolean hasPreviousPage, int currentPage, boolean hasNextPage, int size, int pagesCount) {
+    public Pager(List<Game> games, boolean hasPreviousPage, boolean hasNextPage, int pagesCount, PageAndSort pageAndSort) {
         this.games = games;
-        this.currentPage = currentPage;
         this.hasNextPage = hasNextPage;
         this.hasPreviousPage = hasPreviousPage;
-        this.pageSize = size;
         this.pagesCount = pagesCount;
+        this.pageAndSort = pageAndSort;
+    }
+
+    public PageAndSort getPageAndSort() {
+        return pageAndSort;
+    }
+
+    public void setPageAndSort(PageAndSort pageAndSort) {
+        this.pageAndSort = pageAndSort;
     }
 
     public List<Game> getGames() {
@@ -33,24 +40,8 @@ public class Pager {
         this.games = games;
     }
 
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
     public void setHasNextPage(boolean hasNextPage) {
         this.hasNextPage = hasNextPage;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
     }
 
     public boolean isHasPreviousPage() {
