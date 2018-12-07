@@ -1,4 +1,4 @@
-package com.web.portal.Services;
+package com.web.portal.services;
 
 import com.web.portal.models.Company;
 import com.web.portal.repository.CompanyRepository;

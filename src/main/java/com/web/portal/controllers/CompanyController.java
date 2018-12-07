@@ -1,7 +1,7 @@
 package com.web.portal.controllers;
 
-import com.web.portal.Services.CompanyService;
-import com.web.portal.Services.GameService;
+import com.web.portal.services.CompanyService;
+import com.web.portal.services.GameService;
 import com.web.portal.models.Company;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

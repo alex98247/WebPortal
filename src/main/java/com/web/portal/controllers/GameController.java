@@ -1,6 +1,6 @@
 package com.web.portal.controllers;
 
-import com.web.portal.Services.GameService;
+import com.web.portal.services.GameService;
 import com.web.portal.models.Game;
 import com.web.portal.models.PageAndSort;
 import com.web.portal.models.Pager;

@@ -1,4 +1,4 @@
-package com.web.portal.Services;
+package com.web.portal.services;
 
 import com.web.portal.models.Game;
 import com.web.portal.models.PageAndSort;
